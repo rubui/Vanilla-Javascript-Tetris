@@ -156,11 +156,14 @@ document.addEventListener('DOMContentLoaded', () => {
 			case 40:
 				moveDown()
 				break;
+			case 90:
+				rotateReverse()
+			 	break;
 		}
 
 	}
 
-	document.addEventListener('keyup' , control)
+	document.addEventListener('keydown' , control)
 
 
 	function moveDown(){
@@ -218,6 +221,18 @@ document.addEventListener('DOMContentLoaded', () => {
 		current = theTetrominoes[random][currentRotation]
 		draw()
 	}
+
+	function rotateReverse(){
+		undraw()
+		currentRotation--
+		if(currentRotation === -1){
+			currentRotation = current.length - 1;
+		}
+
+		current = theTetrominoes[random][currentRotation]
+		draw()
+	}
+
 
 	const displaySquares = document.querySelectorAll('.mini-grid div')
 	const displayWidth = 4
