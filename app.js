@@ -119,12 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	console.log(current)
 
 	function draw(){
-		console.log("before")
-		console.log(currentPosition)
-		console.log(squares)
-		console.log("After")
 		current.forEach(index => {
-			console.log("CI")
 			console.log(currentPosition + index)
 			squares[currentPosition + index].classList.add('tetromino')
 			squares[currentPosition + index].style.backgroundColor = colors[random]
@@ -212,13 +207,34 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 
 	function rotate(){
+		// undraw()
+		// currentRotation++
+		// if(currentRotation === current.length){
+		// 	currentRotation = 0;
+		// }
+
+		// current = theTetrominoes[random][currentRotation]
+		// draw()
 		undraw()
-		currentRotation++
-		if(currentRotation === current.length){
-			currentRotation = 0;
+		let postRotation = currentRotation + 1;
+		if(postRotation === current.length){
+			postRotation = 0;
 		}
 
-		current = theTetrominoes[random][currentRotation]
+		const postRotationCurrent = theTetrominoes[random][postRotation]
+
+		const isAtLeftEdge = postRotationCurrent.some(index =>(currentPosition + index) % width === 0)
+		if(!isAtLeftEdge){
+			currentRotation = postRotation;
+			current = postRotationCurrent;
+		}
+		else if(postRotation.every(index => squares[currentPosition + index].classList.contains('taken'))){
+			currentRotation = postRotation;
+			current = postRotationCurrent;
+			
+		}else{
+			current = theTetrominoes[random][currentRotation]
+		}
 		draw()
 	}
 
