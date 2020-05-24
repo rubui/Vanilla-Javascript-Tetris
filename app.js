@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
     	ITetrominoDefault,
     	[2 , width + 2, width * 2 + 2, width * 3 + 2],
     	[width * 2, width * 2 + 1, width * 2 + 2, width * 2 + 3],
-    	[1,width+1,width*2+1,width*3+1]
+    	[1, width + 1,width * 2 + 1,width * 3 + 1]
 	]
 
 	const OTetromino = [
@@ -220,11 +220,23 @@ document.addEventListener('DOMContentLoaded', () => {
 		}
 
 		const postRotationCurrent = theTetrominoes[random][postRotation]
-		const currIsAtLeftEdge = current.some(index =>(currentPosition + index) % width === 0)
-		const currIsAtRightEdge = current.some(index =>(currentPosition + index) % width === width - 1)
 
+		let currIsAtLeftEdge = current.some(index =>(currentPosition + index) % width === 0)
+		let currIsAtRightEdge = current.some(index =>(currentPosition + index) % width === width - 1)
+		
 		const postIsAtRightEdge = postRotationCurrent.some(index =>(currentPosition + index) % width === width - 1)
 		const postIsAtLeftEdge = postRotationCurrent.some(index =>(currentPosition + index) % width === 0)
+
+		if(random === 0){
+			if(!currIsAtLeftEdge){
+				currIsAtLeftEdge = current.some(index =>(currentPosition + index) % width === 1)
+			}
+			if(!currIsAtRightEdge){
+				currIsAtRightEdge = current.some(index =>(currentPosition + index) % width === width - 2)
+			}
+		}
+
+
 		
 		const postCollisionTaken = postRotationCurrent.some(index => squares[currentPosition + index].classList.contains('taken'))
 
@@ -255,11 +267,20 @@ document.addEventListener('DOMContentLoaded', () => {
 		}
 
 		const postRotationCurrent = theTetrominoes[random][postRotation]
-		const currIsAtLeftEdge = current.some(index =>(currentPosition + index) % width === 0)
-		const currIsAtRightEdge = current.some(index =>(currentPosition + index) % width === width - 1)
+		let currIsAtLeftEdge = current.some(index =>(currentPosition + index) % width === 0)
+		let currIsAtRightEdge = current.some(index =>(currentPosition + index) % width === width - 1)
 
 		const postIsAtRightEdge = postRotationCurrent.some(index =>(currentPosition + index) % width === width - 1)
 		const postIsAtLeftEdge = postRotationCurrent.some(index =>(currentPosition + index) % width === 0)
+
+		if(random === 0){
+			if(!currIsAtLeftEdge){
+				currIsAtLeftEdge = current.some(index =>(currentPosition + index) % width === 1)
+			}
+			if(!currIsAtRightEdge){
+				currIsAtRightEdge = current.some(index =>(currentPosition + index) % width === width - 2)
+			}
+		}
 		
 		const postCollisionTaken = postRotationCurrent.some(index => squares[currentPosition + index].classList.contains('taken'))
 
