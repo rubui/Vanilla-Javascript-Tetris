@@ -120,7 +120,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	function draw(){
 		current.forEach(index => {
-			console.log(currentPosition + index)
 			squares[currentPosition + index].classList.add('tetromino')
 			squares[currentPosition + index].style.backgroundColor = colors[random]
 		})
@@ -162,7 +161,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 	function moveDown(){
-		console.log(squares)
 		undraw()
 		currentPosition += width
 		draw()
@@ -216,37 +214,66 @@ document.addEventListener('DOMContentLoaded', () => {
 		// current = theTetrominoes[random][currentRotation]
 		// draw()
 		undraw()
-		let postRotation = currentRotation + 1;
+		let postRotation = currentRotation + 1
 		if(postRotation === current.length){
-			postRotation = 0;
+			postRotation = 0
 		}
 
 		const postRotationCurrent = theTetrominoes[random][postRotation]
+		const currIsAtLeftEdge = current.some(index =>(currentPosition + index) % width === 0)
+		const currIsAtRightEdge = current.some(index =>(currentPosition + index) % width === width - 1)
 
-		const isAtLeftEdge = postRotationCurrent.some(index =>(currentPosition + index) % width === 0)
-		if(!isAtLeftEdge){
-			currentRotation = postRotation;
-			current = postRotationCurrent;
-		}
-		else if(postRotation.every(index => squares[currentPosition + index].classList.contains('taken'))){
-			currentRotation = postRotation;
-			current = postRotationCurrent;
-			
-		}else{
+		const postIsAtRightEdge = postRotationCurrent.some(index =>(currentPosition + index) % width === width - 1)
+		const postIsAtLeftEdge = postRotationCurrent.some(index =>(currentPosition + index) % width === 0)
+		
+		const postCollisionTaken = postRotationCurrent.some(index => squares[currentPosition + index].classList.contains('taken'))
+
+		if((currIsAtLeftEdge && postIsAtRightEdge) || (currIsAtRightEdge && postIsAtLeftEdge) || postCollisionTaken){
+			console.log("true")
 			current = theTetrominoes[random][currentRotation]
+		}
+		else{
+			currentRotation = postRotation;
+			current = postRotationCurrent;
 		}
 		draw()
 	}
 
 	function rotateReverse(){
+		// undraw()
+		// currentRotation--
+		// if(currentRotation === -1){
+		// 	currentRotation = current.length - 1;
+		// }
+
+		// current = theTetrominoes[random][currentRotation]
+		// draw()
 		undraw()
-		currentRotation--
-		if(currentRotation === -1){
-			currentRotation = current.length - 1;
+		let postRotation = currentRotation - 1
+		if(postRotation === -1){
+			postRotation = current.length - 1
 		}
 
-		current = theTetrominoes[random][currentRotation]
+		const postRotationCurrent = theTetrominoes[random][postRotation]
+		const currIsAtLeftEdge = current.some(index =>(currentPosition + index) % width === 0)
+		const currIsAtRightEdge = current.some(index =>(currentPosition + index) % width === width - 1)
+
+		const postIsAtRightEdge = postRotationCurrent.some(index =>(currentPosition + index) % width === width - 1)
+		const postIsAtLeftEdge = postRotationCurrent.some(index =>(currentPosition + index) % width === 0)
+		
+		const postCollisionTaken = postRotationCurrent.some(index => squares[currentPosition + index].classList.contains('taken'))
+
+		if((currIsAtLeftEdge && postIsAtRightEdge) || (currIsAtRightEdge && postIsAtLeftEdge) || postCollisionTaken){
+			console.log("true")
+			current = theTetrominoes[random][currentRotation]
+		}
+		else{
+			currentRotation = postRotation
+			current = postRotationCurrent
+		}
+
 		draw()
+
 	}
 
 
@@ -255,7 +282,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	let displayIndex = 0
 
 	// Define Array of Default Tetromino Positions
-	const UpNextTetrominos = [
+	const upNextTetrominos = [
 		[displayWidth, displayWidth + 1, displayWidth + 2, displayWidth + 3],
 	 	[displayWidth + 1, displayWidth + 2, displayWidth * 2 + 1, displayWidth * 2 + 2],
 	 	[displayWidth + 1, displayWidth * 2, displayWidth * 2 + 1, displayWidth * 2 + 2],
@@ -271,7 +298,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			square.classList.remove('tetromino')
 			square.style.backgroundColor = ''
 		})
-		UpNextTetrominos[nextRandom].forEach( index => {
+		upNextTetrominos[nextRandom].forEach( index => {
 			displaySquares[displayIndex + index].classList.add('tetromino')
 			displaySquares[displayIndex + index].style.backgroundColor = colors[nextRandom]
 		})
@@ -290,7 +317,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	})
 
 	function addScore(){
-		for(let i = 0; i < gridNum; i += width){
+		for(let i = 0; i < 199; i += width){
 			const row = [i, i + 1, i + 2, i + 3, i + 4, i + 5, i + 6, i + 7, i + 8, i + 9]
 
 			if(row.every(index => squares[index].classList.contains('taken'))){

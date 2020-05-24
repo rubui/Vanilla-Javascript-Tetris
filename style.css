@@ -39,7 +39,7 @@ h1 {
 	height: 80px;
 	display: flex;
 	flex-wrap: wrap;
-	border-style: solid;
+	border: solid ;
 }
 
 .mini-grid div{
